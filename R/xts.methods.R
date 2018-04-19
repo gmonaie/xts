@@ -79,7 +79,7 @@ function(x, i, j, drop = FALSE, which.i=FALSE,...)
       # must be able to process - and then allow for operations???
 
       i.tmp <- NULL
-      tz <- as.character(indexTZ(x)) # ideally this moves to attr(index,"tzone")
+      tz <- as.character(tzone(x))
       i_len <- length(i)
 
       for(ii in i) {
@@ -165,7 +165,7 @@ function(x, i, j, drop = FALSE, which.i=FALSE,...)
       if(missing(i))
         i <- seq_len(nr)
       return(.xts(coredata(x)[i,j,drop=FALSE], index=.index(x)[i],
-                  .indexCLASS=indexClass(x), .indexTZ=indexTZ(x)))
+                  .indexCLASS=indexClass(x)))
     } 
     if(missing(i))
       return(.Call("extract_col", x, as.integer(j), drop, 1, nr, PACKAGE='xts'))

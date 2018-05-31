@@ -192,3 +192,30 @@ test.i_POSIXlt <- function() {
     checkIdentical(y, x[i, ])
   }
 }
+
+# Time-of-day subset
+
+test.time_of_day_when_DST_starts <- function() {
+  # 2017-03-12: no 0200
+  tz <- "America/Chicago"
+  tmseq <- seq(as.POSIXct("2017-03-11", tz),
+               as.POSIXct("2017-03-14", tz), by = "1 hour")
+  x <- xts(seq_along(tmseq), tmseq)
+  i1 <- structure(c(1489215600, 1489219200, 1489222800, 1489302000,
+                    1489305600, 1489384800, 1489388400, 1489392000),
+        tzone = "America/Chicago", tclass = c("POSIXct", "POSIXt"))
+  checkIdentical(.index(x["T01:00:00/T03:00:00"]), i1)
+}
+
+test.time_of_day_when_DST_ends <- function() {
+  # 2017-11-05: 0200 occurs twice
+  tz <- "America/Chicago"
+  tmseq <- seq(as.POSIXct("2017-11-04", tz),
+               as.POSIXct("2017-11-07", tz), by = "1 hour")
+  x <- xts(seq_along(tmseq), tmseq)
+  i1 <- structure(c(1509775200, 1509778800, 1509782400, 1509861600, 1509865200, 
+        1509868800, 1509872400, 1509951600, 1509955200, 1509958800),
+        tzone = "America/Chicago", tclass = c("POSIXct", "POSIXt"))
+  checkIdentical(.index(x["T01:00:00/T03:00:00"]), i1)
+}
+
